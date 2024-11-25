@@ -38,16 +38,6 @@ export function cleanSignature(signature) {
 }
 
 /**
- * Adds the signature delimiter to the beginning of the signature.
- *
- * @param {string} signature - The signature to add the delimiter to.
- * @returns {string} - The signature with the delimiter added.
- */
-function appendDelimiter(signature) {
-  return `${SIGNATURE_DELIMITER}\n\n${cleanSignature(signature)}`;
-}
-
-/**
  * Check if there's an unedited signature at the end of the body
  * If there is, return the index of the signature, If there isn't, return -1
  *
@@ -55,13 +45,16 @@ function appendDelimiter(signature) {
  * @param {string} signature - The signature to search for.
  * @returns {number} - The index of the last occurrence of the signature in the body, or -1 if not found.
  */
-export function findSignatureInBody(body, signature) {
-  const trimmedBody = body.trimEnd();
+export function findSignatureInBody(body, signature, location = 'top') {
+  const trimmedBody = body.trim();
   const cleanedSignature = cleanSignature(signature);
 
   // check if body ends with signature
-  if (trimmedBody.endsWith(cleanedSignature)) {
+  if (location == 'bottom' && trimmedBody.endsWith(cleanedSignature)) {
     return body.lastIndexOf(cleanedSignature);
+  }
+  else if (location == 'top' && trimmedBody.startsWith(cleanedSignature)) {
+    return body.indexOf(cleanedSignature);
   }
 
   return -1;
@@ -74,14 +67,17 @@ export function findSignatureInBody(body, signature) {
  * @param {string} signature - The signature to append.
  * @returns {string} - The body with the signature appended.
  */
-export function appendSignature(body, signature) {
+export function appendSignature(body, signature, location = 'top') {
   const cleanedSignature = cleanSignature(signature);
   // if signature is already present, return body
-  if (findSignatureInBody(body, cleanedSignature) > -1) {
+  if (findSignatureInBody(body, cleanedSignature, location) > -1) {
     return body;
   }
 
-  return `${body.trimEnd()}\n\n${appendDelimiter(cleanedSignature)}`;
+  if (location == 'bottom')
+    return `${body.trimEnd()}\n${cleanedSignature}`;
+  else
+    return `${cleanedSignature}\n${body.trimStart()}`;
 }
 
 /**
@@ -91,7 +87,7 @@ export function appendSignature(body, signature) {
  * @param {string} signature - The signature to remove.
  * @returns {string} - The body with the signature removed.
  */
-export function removeSignature(body, signature) {
+export function removeSignature(body, signature, location = 'top') {
   // this will find the index of the signature if it exists
   // Regardless of extra spaces or new lines after the signature, the index will be the same if present
   const cleanedSignature = cleanSignature(signature);
@@ -104,17 +100,10 @@ export function removeSignature(body, signature) {
   // trimming will ensure any spaces or new lines before the signature are removed
   // This means we will have the delimiter at the end
   if (signatureIndex > -1) {
-    newBody = newBody.substring(0, signatureIndex).trimEnd();
-  }
-
-  // let's find the delimiter and remove it
-  const delimiterIndex = newBody.lastIndexOf(SIGNATURE_DELIMITER);
-  if (
-    delimiterIndex !== -1 &&
-    delimiterIndex === newBody.length - SIGNATURE_DELIMITER.length // this will ensure the delimiter is at the end
-  ) {
-    // if the delimiter is at the end, remove it
-    newBody = newBody.substring(0, delimiterIndex);
+    if (location == 'bottom')
+      newBody = newBody.substring(0, signatureIndex).trimEnd();
+    else
+      newBody = newBody.substring(signatureIndex + cleanedSignature.length).trimStart();
   }
 
   // return the value
@@ -131,9 +120,9 @@ export function removeSignature(body, signature) {
  * @returns {string} - The body with the old signature replaced with the new signature.
  *
  */
-export function replaceSignature(body, oldSignature, newSignature) {
-  const withoutSignature = removeSignature(body, oldSignature);
-  return appendSignature(withoutSignature, newSignature);
+export function replaceSignature(body, oldSignature, newSignature, location = 'top') {
+  const withoutSignature = removeSignature(body, oldSignature, location);
+  return appendSignature(withoutSignature, newSignature, location);
 }
 
 /**
