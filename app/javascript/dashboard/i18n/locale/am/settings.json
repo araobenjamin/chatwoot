@@ -50,6 +50,18 @@
         "ERROR": "Message Signature cannot be empty",
         "PLACEHOLDER": "Insert your personal message signature here."
       },
+      "SIGNATURE_LOCATION_SECTION": {
+        "TITLE": "Personal message signature location",
+        "NOTE": "Define if you personal signature is located on top or bottom of the message.",
+        "BTN_TEXT": "Save message signature lolcation",
+        "API_ERROR": "Couldn't save signature location! Try again",
+        "API_SUCCESS": "Signature location saved successfully"
+      },
+      "SIGNATURE_LOCATION": {
+        "LABEL": "Message Signature Location",
+        "ERROR": "Message Signature Location cannot be empty",
+        "PLACEHOLDER": "Insert your personal message signature here."
+      },
       "PASSWORD_SECTION": {
         "TITLE": "Password",
         "NOTE": "Updating your password would reset your logins in multiple devices.",

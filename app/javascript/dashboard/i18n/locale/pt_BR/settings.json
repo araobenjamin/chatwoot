@@ -50,6 +50,17 @@
         "ERROR": "Assinatura da mensagem não pode estar vazia",
         "PLACEHOLDER": "Insira aqui a assinatura de sua mensagem pessoal."
       },
+      "SIGNATURE_LOCATION_SECTION": {
+        "TITLE": "Local da assinatura de mensagens pessoais",
+        "NOTE": "Defina o local da assinatura pessoal em suas mensagens.",
+        "BTN_TEXT": "Salvar local da assinatura da mensagem",
+        "API_ERROR": "Não foi possível salvar o local da assinatura! Tente novamente",
+        "API_SUCCESS": "Local da assinatura salva com sucesso"
+      },
+      "SIGNATURE_LOCATION": {
+        "LABEL": "Local da assinatura da mensagem",
+        "ERROR": "Local da assinatura da mensagem não pode estar vazia"
+      },
       "PASSWORD_SECTION": {
         "TITLE": "Senha",
         "NOTE": "A atualização da sua senha redefiniria o seu login em vários dispositivos.",

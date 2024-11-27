@@ -83,6 +83,12 @@ export const getters = {
     return messageSignature || '';
   },
 
+  getSignatureLocation($state) {
+    const { signature_location: signatureLocation } = $state.currentUser;
+
+    return signatureLocation || 'top';
+  },
+
   getCurrentAccount($state, $getters) {
     const { accounts = [] } = $state.currentUser;
     const [currentAccount = {}] = accounts.filter(

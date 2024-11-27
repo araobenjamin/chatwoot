@@ -101,6 +101,7 @@ export default {
       this.avatarUrl = this.currentUser.avatar_url;
       this.displayName = this.currentUser.display_name;
       this.messageSignature = this.currentUser.message_signature;
+      this.signatureLocation = this.currentUser.signature_location;
     },
     async dispatchUpdate(payload, successMessage, errorMessage) {
       let alertMessage = '';
@@ -141,8 +142,8 @@ export default {
 
       if (hasEmailChanged && success) clearCookiesOnLogout();
     },
-    async updateSignature(signature) {
-      const payload = { message_signature: signature };
+    async updateSignature(signature, location) {
+      const payload = { message_signature: signature, signature_location: location };
       let successMessage = this.$t(
         'PROFILE_SETTINGS.FORM.MESSAGE_SIGNATURE_SECTION.API_SUCCESS'
       );
@@ -209,6 +210,7 @@ export default {
     >
       <MessageSignature
         :message-signature="messageSignature"
+        :signature-location="signatureLocation"
         @update-signature="updateSignature"
       />
     </FormSection>

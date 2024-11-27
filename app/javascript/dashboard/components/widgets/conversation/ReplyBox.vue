@@ -123,6 +123,7 @@ export default {
       isRTL: 'accounts/isRTL',
       currentChat: 'getSelectedChat',
       messageSignature: 'getMessageSignature',
+      signatureLocation: 'getSignatureLocation',
       currentUser: 'getCurrentUser',
       lastEmail: 'getLastEmailInSelectedChat',
       globalConfig: 'globalConfig/get',
@@ -498,9 +499,9 @@ export default {
 
       if (!this.showRichContentEditor && this.messageSignature) {
         // remove the old signature -> extract text from markdown -> attach new signature
-        let message = removeSignature(this.message, this.messageSignature);
+        let message = removeSignature(this.message, this.messageSignature, this.signatureLocation);
         message = extractTextFromMarkdown(message);
-        message = appendSignature(message, plainTextSignature);
+        message = appendSignature(message, plainTextSignature, this.signatureLocation);
 
         this.message = message;
       } else {
@@ -1155,6 +1156,7 @@ export default {
         enable-variables
         :variables="messageVariables"
         :signature="signatureToApply"
+        :signature-location="signatureLocation"
         allow-signature
         :channel-type="channelType"
         @typing-off="onTypingOff"

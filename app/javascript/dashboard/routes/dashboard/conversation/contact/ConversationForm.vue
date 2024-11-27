@@ -105,6 +105,7 @@ export default {
       currentUser: 'getCurrentUser',
       globalConfig: 'globalConfig/get',
       messageSignature: 'getMessageSignature',
+      signatureLocation: 'getSignatureLocation',
     }),
     sendWithSignature() {
       return this.fetchSignatureFlagFromUISettings(this.channelType);
@@ -224,9 +225,9 @@ export default {
     setSignature() {
       if (this.messageSignature) {
         if (this.isSignatureEnabledForInbox) {
-          this.message = appendSignature(this.message, this.signatureToApply);
+          this.message = appendSignature(this.message, this.signatureToApply, this.signatureLocation);
         } else {
-          this.message = removeSignature(this.message, this.signatureToApply);
+          this.message = removeSignature(this.message, this.signatureToApply, this.signatureLocation);
         }
       }
     },
